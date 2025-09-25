@@ -12,14 +12,18 @@ const app = express();
 app.use(express.json())
 app.use(urlencoded({extended:true}))
 app.disable("x-powered-by")
-const port = 4000;
+const port = 4001;
 
 connectDB()
-
-app.use(router,successValidator)
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.use((req,res,next)=>{
+  console.log(req.path)
+  console.log(req.originalUrl)
+  next()
+})
+app.use('/api/auth',router,successValidator)
+// app.get('/', (req, res) => {
+//   res.send('Hello World!');
+// });
 app.use(errorHandler)
 app.use(errorLogger)
 app.listen(port, () => {
