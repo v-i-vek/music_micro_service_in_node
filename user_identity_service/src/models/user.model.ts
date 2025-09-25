@@ -1,5 +1,6 @@
 import { DataTypes, UUID, UUIDV4 } from "sequelize";
 import sequelize from "../config/db";
+import bcrypt from 'bcrypt'
 
 export const User = sequelize.define(
     'User',{
@@ -22,7 +23,14 @@ export const User = sequelize.define(
         }
     }
 )
-//  User.sync({ alter: true }).then(()=>console.log("sync success")).catch((err)=>console.log(err));
+User.beforeCreate(async(user,options)=>{
+  try {
+    user.dataValues.password = await bcrypt.hash(user.dataValues.password.toString(),10)
+    
+  } catch (error) {
+    console.error(`Error while executing function in line number ${error}`)
+    throw error
+  }
+})
 
-console.log(User === sequelize.models.User); // true
 
