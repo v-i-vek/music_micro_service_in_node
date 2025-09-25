@@ -16,12 +16,12 @@ const port = 4000;
 
 connectDB()
 
-app.use(errorLogger)
-app.use(errorHandler)
+app.use(router,successValidator)
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
-app.use(router,successValidator)
+app.use(errorHandler)
+app.use(errorLogger)
 app.listen(port, () => {
   return console.log(`Express is listening at http://localhost:${port}`);
 });

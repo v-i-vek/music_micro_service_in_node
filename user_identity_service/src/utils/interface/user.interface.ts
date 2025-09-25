@@ -3,3 +3,8 @@ export interface IUser {
   password: string;
   userName: string;
 }
+
+export interface ILoginUser{
+    userName:string,
+    password:string
+}

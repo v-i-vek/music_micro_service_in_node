@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../models/user.model";
-import { registerUserDao } from "../service/user.service";
+import { loginUserDao, registerUserDao } from "../service/user.service";
 
 export const addUser = async (
   req: Request,
@@ -31,8 +31,20 @@ export const registerUser = async (
     res.locals.data = result
     next()
 
-
   } catch (error) {
     next(error)
   }
 };
+
+export const loginUser = async( req: Request,
+  res: Response,
+  next: NextFunction)=>{
+    try {
+      const {accessToken} = await loginUserDao(req.body)
+      res.locals.data = {accessToken};
+      next()
+    
+    } catch (error) {
+      next(error)  
+    }
+  }
