@@ -3,6 +3,7 @@ import express, { Response, Request, NextFunction, urlencoded } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import proxy from "express-http-proxy";
+import { validateToken } from "./middleware/validateToken";
 
 const app = express();
 app.use(express.json());
@@ -64,9 +65,10 @@ app.use('/v1/auth',proxy(`http://${auth_service}/api/auth`,{
 }))
 
 // for music service
-app.use('/v1/song',proxy(`http://${music_service}/api/auth`,{
+app.use('/v1/song',validateToken,proxy(`http://${music_service}/api/auth`,{
     ...proxyOption,
     proxyReqOptDecorator:(proxyReq,srcReq)=>{
+        proxyReq.headers["x-user-id"] = srcReq.app.locals.conUser.id
         proxyReq.headers["Content-Type"] = "application/json";
       return proxyReq;
     },
