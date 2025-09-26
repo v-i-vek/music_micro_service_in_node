@@ -6,8 +6,8 @@ import proxy from "express-http-proxy";
 import { validateToken } from "./middleware/validateToken";
 
 const app = express();
-app.use(express.json());
-app.use(urlencoded({ extended: true }));
+app.use(express.json({limit:'50mb'}));
+app.use(urlencoded({ extended: true ,limit:'50mb'}));
 app.disable("x-powered-by");
 const PORT = Number(process.env.PORT) || 4000;
 
@@ -67,9 +67,12 @@ app.use('/v1/auth',proxy(`http://${auth_service}/api/auth`,{
 // for music service
 app.use('/v1/song',validateToken,proxy(`http://${music_service}/api/auth`,{
     ...proxyOption,
+    limit:'10mb',
     proxyReqOptDecorator:(proxyReq,srcReq)=>{
         proxyReq.headers["x-user-id"] = srcReq.app.locals.conUser.id
+          if (!srcReq.headers["content-type"].startsWith("multipart/form-data")) {
         proxyReq.headers["Content-Type"] = "application/json";
+      }
       return proxyReq;
     },
     userResDecorator:(proxyRes, proxyResData, userReq, userRes)=>{

@@ -2,17 +2,23 @@ import { Song } from "../models/song.model";
 import { EHttpCode, HttpException } from "../utils/httpException";
 import { ISong } from "../utils/interface/song.interface";
 import { getMessage } from "../utils/message";
+import { uploadFileToS3 } from "../utils/service/common.service";
 
 
 
 
 
-export const  addSongDao =  async(song:ISong)=>{
+export const addSongDao = async (file, song: ISong, userId) => {
    try {
-      return await Song.create({...song})
+      const objectKey = `${userId}-${Math.ceil(Date.now() / 1000)}-${file.originalname}`;
+      const s3Upload = await uploadFileToS3(file, objectKey)
+      if (!s3Upload) throw new HttpException(EHttpCode.UNPROCESSABLE_ENTITY, getMessage("fileUploadFailed"))
+      song.s3_url = s3Upload
+      song.user_id = userId
+      return await Song.create({ ...song })
    } catch (error) {
-    console.log(error)
-    throw new HttpException(EHttpCode.BAD_REQUEST,getMessage("dataNotFound"))
+      console.log(error)
+      throw new HttpException(EHttpCode.BAD_REQUEST, getMessage("dataNotFound"))
    }
 
 }

@@ -6,6 +6,7 @@ import { connectDB } from './config/db';
 import router from './routes/song.route';
 import { successValidator } from './middleware/success.middleware';
 import { errorHandler, errorLogger } from './middleware/error.middleware';
+import { authenticateReq } from './middleware/auth.middleware';
 
 
 
@@ -13,7 +14,7 @@ import { errorHandler, errorLogger } from './middleware/error.middleware';
 
 
 const app = express();
-app.use(express.json())
+app.use(express.json({limit:'50mb'}))
 app.use(urlencoded({extended:true}))
 app.disable("x-powered-by")
 const PORT = process.env.PORT||4002;
@@ -27,7 +28,7 @@ app.use((req,res,next)=>{
   next()
 })
 
-app.use('/api/song',router,successValidator)
+app.use('/api/song',authenticateReq,router,successValidator)
 app.use(errorHandler)
 app.use(errorLogger)
 
