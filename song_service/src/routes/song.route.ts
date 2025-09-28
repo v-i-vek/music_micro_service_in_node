@@ -17,7 +17,6 @@ router.get('/songs',getAllSongs)
 // This middleware will catch errors specifically from multer
 router.use((err: any, req: any, res: any, next: any) => {
     if (err instanceof MulterError) {
-        console.log('----->', err)
         return res.status(400).json({ message: "File upload error", error: err.message });
     } else if (err) {
         return res.status(500).json({ message: "An unknown error occurred", error: err.message });

@@ -8,7 +8,6 @@ import { getMessage } from "../utils/message";
 
 export const addsong = async (req:any,res:any,next:NextFunction) => {
     try {        
-        console.log("------",req.body)
         if(!req.file) throw new HttpException(EHttpCode.NOT_FOUND,getMessage("fileNotFound"))
         const songs = req.body;
     console.log(req.app.locals.user)
