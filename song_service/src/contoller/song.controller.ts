@@ -1,6 +1,6 @@
 import { Request,Response,NextFunction } from "express";
 import { Song } from "../models/song.model";
-import { addSongDao } from "../service/song.service";
+import { addSongDao, getAllSongDao } from "../service/song.service";
 import { EHttpCode, HttpException } from "../utils/httpException";
 import { getMessage } from "../utils/message";
 
@@ -8,6 +8,7 @@ import { getMessage } from "../utils/message";
 
 export const addsong = async (req:any,res:any,next:NextFunction) => {
     try {        
+        console.log("------",req.body)
         if(!req.file) throw new HttpException(EHttpCode.NOT_FOUND,getMessage("fileNotFound"))
         const songs = req.body;
     console.log(req.app.locals.user)
@@ -18,6 +19,14 @@ export const addsong = async (req:any,res:any,next:NextFunction) => {
     } catch (error) {
         next(error)
     }
+}
 
-
+export const getAllSongs = async(req,res,next)=>{
+    try {
+        const result = await getAllSongDao()
+        res.locals.data = result
+        next()
+    } catch (error) {
+        next(error)
+    }
 }

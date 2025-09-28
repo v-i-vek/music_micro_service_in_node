@@ -8,7 +8,8 @@ const messages: any = {
   userDeleted: "user deleted successfully",
   notAuthorized:"You are not authorize to do this operation",
   fileNotFound:"mp3 file not found",
-  fileUploadFailed:"file upload failed"
+  fileUploadFailed:"file upload failed",
+  somethingWentWrong:"something went wrong"
 
 }
 

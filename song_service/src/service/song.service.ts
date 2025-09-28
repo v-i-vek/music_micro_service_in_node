@@ -22,3 +22,13 @@ export const addSongDao = async (file, song: ISong, userId) => {
    }
 
 }
+
+export const getAllSongDao = async()=>{
+   try {
+     const result =  await Song.findAll()
+     return result
+   } catch (error) {
+      console.log(error)
+      throw new HttpException(EHttpCode.BAD_REQUEST,getMessage("somethingWentWrong"))
+   }
+}
