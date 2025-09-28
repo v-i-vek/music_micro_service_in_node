@@ -6,7 +6,6 @@ let channel = null
 const EX_CHANGE_NAME = 'DELETE_SONG_EVENT'
 
 async function connectToMQ() {
-  console.log("++++++",process.env.RABBITMQ_URL)
     try {
         connection = await amq.connect(process.env.RABBITMQ_URL)
         channel = await  connection.createChannel()
@@ -39,7 +38,6 @@ export const consumeEvent = async(routingKey,callback)=>{
      channel.consume(q.queue,(msg)=>{
         if(msg !==null){
             const content = JSON.parse(msg.content.toString())
-            console.log("---->",content)
             callback(content)
             channel.ack(msg)
 

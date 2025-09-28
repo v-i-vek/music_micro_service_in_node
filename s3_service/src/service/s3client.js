@@ -1,7 +1,8 @@
 import { PutObjectCommand, S3Client,DeleteObjectCommand } from "@aws-sdk/client-s3";
 
-const REGION = process.env.REGION
-const s3Client = new S3Client({
+
+let REGION =''
+let s3Client = new S3Client({
     region:REGION,
     credentials:{
         accessKeyId:process.env.ACCESS_KEY,
@@ -9,8 +10,19 @@ const s3Client = new S3Client({
     }
 })
 
-const bucketName =  process.env.BUCKET_NAME;
-
+let bucketName =  process.env.BUCKET_NAME;
+function connectS3Client(){
+    bucketName = process.env.BUCKET_NAME;
+    REGION = process.env.REGION
+   s3Client = new S3Client({
+    region:REGION,
+    credentials:{
+        accessKeyId:process.env.ACCESS_KEY,
+        secretAccessKey:process.env.SECRET_ACCESS_KEY
+    }
+})
+ 
+}
 // export const uploadFileToS3 = async (file, objectKey) => {
 //   try {
 //     if (!bucketName) {
@@ -44,17 +56,11 @@ const bucketName =  process.env.BUCKET_NAME;
 
 console.log(bucketName)
 export const deleteFileFromS3 = async (objectKey) => {
-    const REGION = process.env.REGION
-const s3Client = new S3Client({
-    region:REGION,
-    credentials:{
-        accessKeyId:process.env.ACCESS_KEY,
-        secretAccessKey:process.env.SECRET_ACCESS_KEY
-    }
-})
-
-const bucketName =  process.env.BUCKET_NAME;
-  try {
+    try {
+      if(!s3Client || bucketName || REGION){
+        connectS3Client()
+      } 
+      
     console.log(bucketName)
     if (!bucketName) {
       throw new Error("BUCKET_NAME environment variable is not set");
