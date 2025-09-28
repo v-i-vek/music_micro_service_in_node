@@ -3,6 +3,7 @@ import { EHttpCode, HttpException } from "../utils/httpException";
 import { ISong } from "../utils/interface/song.interface";
 import { getMessage } from "../utils/message";
 import { uploadFileToS3 } from "../utils/service/common.service";
+import { publishEvent } from "./rabbitMq.service";
 
 
 
@@ -27,6 +28,21 @@ export const getAllSongDao = async()=>{
    try {
      const result =  await Song.findAll()
      return result
+   } catch (error) {
+      console.log(error)
+      throw new HttpException(EHttpCode.BAD_REQUEST,getMessage("somethingWentWrong"))
+   }
+}
+
+export const deleteSong = async(id:string)=>{
+   try {
+      const song = await Song.findByPk(id)
+      if(!song){
+         throw new HttpException(EHttpCode.BAD_REQUEST,getMessage("dataNotFound"))
+      }
+      await publishEvent("song.deleted",song)   
+
+      return await Song.destroy({where:{id}})
    } catch (error) {
       console.log(error)
       throw new HttpException(EHttpCode.BAD_REQUEST,getMessage("somethingWentWrong"))

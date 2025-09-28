@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addsong, getAllSongs } from "../contoller/song.controller"; // Corrected typo from "contoller"
+import { addsong, deleteSongbyId, getAllSongs } from "../contoller/song.controller"; // Corrected typo from "contoller"
 import multer, { MulterError } from "multer";
 
 const router = Router();
@@ -10,8 +10,9 @@ const upload = multer({
     limits: { fileSize: 10 * 1024 * 1024 } // 10MB, not 5MB
 }).single("file");
 
-router.post('/addsong', upload, addsong);
-router.get('/songs',getAllSongs)
+router.post('/song', upload, addsong);
+router.get('/song',getAllSongs)
+router.delete('/song/:id',deleteSongbyId)
 
 
 // This middleware will catch errors specifically from multer

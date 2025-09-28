@@ -70,9 +70,9 @@ app.use('/v1/song',validateToken,proxy(`http://${music_service}/api/auth`,{
     limit:'10mb',
     proxyReqOptDecorator:(proxyReq,srcReq)=>{
         proxyReq.headers["x-user-id"] = srcReq.app.locals.conUser.id
-          if (!srcReq.headers["content-type"].startsWith("multipart/form-data")) {
-        proxyReq.headers["Content-Type"] = "application/json";
-      }
+      //     if (!srcReq.headers["content-type"].startsWith("multipart/form-data")) {
+      //   proxyReq.headers["Content-Type"] = "application/json";
+      // }
       return proxyReq;
     },
     userResDecorator:(proxyRes, proxyResData, userReq, userRes)=>{
