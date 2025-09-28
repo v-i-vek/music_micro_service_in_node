@@ -1,7 +1,7 @@
 import { PutObjectCommand, S3Client,DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 
-let REGION =''
+let REGION =process.env.REGION
 let s3Client = new S3Client({
     region:REGION,
     credentials:{
@@ -11,6 +11,7 @@ let s3Client = new S3Client({
 })
 
 let bucketName =  process.env.BUCKET_NAME;
+
 function connectS3Client(){
     bucketName = process.env.BUCKET_NAME;
     REGION = process.env.REGION
