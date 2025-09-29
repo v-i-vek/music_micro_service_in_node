@@ -10,7 +10,6 @@ export const addsong = async (req:any,res:any,next:NextFunction) => {
     try {        
         if(!req.file) throw new HttpException(EHttpCode.NOT_FOUND,getMessage("fileNotFound"))
         const songs = req.body;
-    console.log(req.app.locals.user)
         const result = await addSongDao(req.file,songs,req.app.locals.user)
         res.locals.data = result 
        next()
