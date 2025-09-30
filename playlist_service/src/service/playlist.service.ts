@@ -14,10 +14,7 @@ export const createPlaylist = async (playlist: IPlaylist) => {
     return await Playlist.create({ ...playlist });
   } catch (error) {
     console.log(error);
-    throw new HttpException(
-      EHttpCode.CONFLICT,
-      getMessage("somethingWentWrong")
-    );
+    throw error
   }
 };
 
@@ -27,10 +24,7 @@ export const getAllPlaylist = async () => {
     return result;
   } catch (error) {
     console.log(error);
-    throw new HttpException(
-      EHttpCode.BAD_REQUEST,
-      getMessage("somethingWentWrong")
-    );
+   throw error
   }
 };
 
@@ -48,10 +42,7 @@ export const deletePlaylist = async (id: string) => {
     return await Playlist.destroy({ where: { id } });
   } catch (error) {
     console.log(error);
-    throw new HttpException(
-      EHttpCode.BAD_REQUEST,
-      getMessage("somethingWentWrong")
-    );
+   throw error
   }
 };
 
@@ -66,10 +57,7 @@ export const addSongToPlaylist = async (playListData: IPlaylistSong) => {
   } catch (error) {
     console.log(error);
 
-    throw new HttpException(
-      EHttpCode.BAD_REQUEST,
-      getMessage("somethingWentWrong")
-    );
+   throw error
   }
 };
 
@@ -83,10 +71,7 @@ export const getSongByPlaylist = async (playlistId: string) => {
     return result;
   } catch (error) {
     console.log(error);
-    throw new HttpException(
-      EHttpCode.BAD_REQUEST,
-      getMessage("somethingWentWrong")
-    );
+   throw error
   }
 };
 
@@ -107,10 +92,7 @@ export const updatePlaylist = async ( playlistData) => {
     return result
   } catch (error) {
     console.log(error);
-    throw new HttpException(
-      EHttpCode.BAD_REQUEST,
-      getMessage("somethingWentWrong")
-    );
+   throw error
   }
 };
 
@@ -132,10 +114,7 @@ export const deleteSongFromPlaylist = async ( playlistData) => {
     return result
   } catch (error) {
     console.log(error);
-    throw new HttpException(
-      EHttpCode.BAD_REQUEST,
-      getMessage("somethingWentWrong")
-    );
+   throw error
   }
 };
 
