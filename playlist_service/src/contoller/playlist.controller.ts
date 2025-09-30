@@ -1,4 +1,4 @@
-import { Request,Response,NextFunction } from "express";
+import { Request,Response,NextFunction, response } from "express";
 import { EHttpCode, HttpException } from "../utils/httpException";
 import { getMessage } from "../utils/message";
 import { createPlaylist } from "../service/playlist.service";
@@ -34,6 +34,17 @@ export const deleteSongbyId = async(req:Request , res:Response , next:NextFuncti
     try {
         
        
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getSongByPlaylist = async(req,res,next)=>{
+    try {
+         const playlist_id = req.params.id
+        const result = await playlistService.getSongByPlaylist(playlist_id)
+        res.locals.data = result 
         next()
     } catch (error) {
         next(error)

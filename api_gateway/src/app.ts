@@ -33,7 +33,7 @@ const proxyOption = {
     return req.originalUrl.replace(/^\/v1/, "/api");
   },
   proxyErrorHandler: (err: Error, res: Response, next: NextFunction) => {
-    console.error(`Proxy error: ${err.message}`);
+    console.error(`Proxy error: ${err}`);
     res.status(500).json({ message: `Internal server error`, error: err.message });
   },
 };

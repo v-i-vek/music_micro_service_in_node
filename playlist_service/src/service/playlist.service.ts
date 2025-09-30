@@ -1,3 +1,4 @@
+import sequelize from "../config/db";
 import { Playlist } from "../models/playlist.model";
 import { PlaylistSong } from "../models/playlistSong.model";
 import { EHttpCode, HttpException } from "../utils/httpException";
@@ -66,3 +67,20 @@ export const addSongToPlaylist = async (playListData: IPlaylistSong) => {
     );
   }
 };
+
+export const getSongByPlaylist = async(playlistId:string)=>{
+  try {
+    
+    const[result,metadata]= await sequelize.query(` SELECT s.id,s.s3_url,s.title
+  FROM playlist_songs ps
+  LEFT JOIN songs s ON s.id = ps.song_id where ps.playlist_id = '${playlistId}'`)
+
+  return result
+  } catch (error) {
+      console.log(error);
+      throw new HttpException(
+      EHttpCode.BAD_REQUEST,
+      getMessage("somethingWentWrong")
+    );
+  }
+}

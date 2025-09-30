@@ -3,7 +3,7 @@ import sequelize from "../config/db";
 import bcrypt from "bcrypt";
 
 export const User = sequelize.define(
-  "User",
+  "user",
   {
     id: {
       type: UUID,
@@ -24,6 +24,7 @@ export const User = sequelize.define(
     },
   },
   {
+    tableName:"users",
     indexes: [
       {
         unique: true,

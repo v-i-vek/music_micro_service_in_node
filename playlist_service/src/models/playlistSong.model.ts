@@ -1,7 +1,7 @@
 import { DataTypes, UUID, UUIDV4 } from "sequelize";
 import sequelize from "../config/db";
 
-export const PlaylistSong = sequelize.define("playlist_song", {
+export const PlaylistSong = sequelize.define("Playlist_song", {
 
     id:{
       type:DataTypes.UUID,
@@ -21,8 +21,11 @@ export const PlaylistSong = sequelize.define("playlist_song", {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: "Songs",
+      model: "songs",
       key: "id",
     },
   },
+  
+},{
+  tableName:"playlist_songs"
 });
