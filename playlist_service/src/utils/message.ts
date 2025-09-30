@@ -5,7 +5,9 @@ const messages: any = {
   notAuthorized:"You are not authorize to do this operation",
   fileNotFound:"mp3 file not found",
   fileUploadFailed:"file upload failed",
-  somethingWentWrong:"something went wrong"
+  somethingWentWrong:"something went wrong",
+  playlistNotFound:"playlist not Found",
+  songAlreadyExist:"song already exist in playlist"
 
 }
 

@@ -57,6 +57,11 @@ export const deletePlaylist = async (id: string) => {
 
 export const addSongToPlaylist = async (playListData: IPlaylistSong) => {
   try {
+    const {song_id,playlist_id} = playListData
+    const isSongExist = await PlaylistSong.findOne({where:{song_id,playlist_id}})
+    if(isSongExist){
+      throw new HttpException(EHttpCode.CONFLICT,getMessage("songAlreadyExist"))
+    }
     return await PlaylistSong.create({ ...playListData });
   } catch (error) {
     console.log(error);
@@ -68,19 +73,71 @@ export const addSongToPlaylist = async (playListData: IPlaylistSong) => {
   }
 };
 
-export const getSongByPlaylist = async(playlistId:string)=>{
+export const getSongByPlaylist = async (playlistId: string) => {
   try {
-    
-    const[result,metadata]= await sequelize.query(` SELECT s.id,s.s3_url,s.title
+    const [result, metadata] =
+      await sequelize.query(` SELECT s.id,s.s3_url,s.title
   FROM playlist_songs ps
-  LEFT JOIN songs s ON s.id = ps.song_id where ps.playlist_id = '${playlistId}'`)
+  LEFT JOIN songs s ON s.id = ps.song_id where ps.playlist_id = '${playlistId}'`);
 
-  return result
+    return result;
   } catch (error) {
-      console.log(error);
-      throw new HttpException(
+    console.log(error);
+    throw new HttpException(
       EHttpCode.BAD_REQUEST,
       getMessage("somethingWentWrong")
     );
   }
-}
+};
+
+export const updatePlaylist = async ( playlistData) => {
+  try {
+
+   const {user_id,id,title} = playlistData
+    const result = await Playlist.update(
+      {title},
+      {
+        where: {
+          id: id,
+          user_id:user_id
+        },
+      }
+    );
+
+    return result
+  } catch (error) {
+    console.log(error);
+    throw new HttpException(
+      EHttpCode.BAD_REQUEST,
+      getMessage("somethingWentWrong")
+    );
+  }
+};
+
+
+export const deleteSongFromPlaylist = async ( playlistData) => {
+  try {
+
+   const {song_id,playlist_id,user_id} = playlistData
+   const isPlaylistExist = await Playlist.findOne({where:{id:playlist_id}})
+
+   if(!isPlaylistExist)throw new HttpException(EHttpCode.NOT_FOUND,getMessage("playlistNotFound"))
+   if(isPlaylistExist && isPlaylistExist?.dataValues.user_id !== user_id){
+      throw new HttpException(EHttpCode.UNAUTHORIZED,getMessage("notAuthorized"))
+      
+   }     
+   const result = await PlaylistSong.destroy({where:{playlist_id,song_id}}
+
+   )
+    return result
+  } catch (error) {
+    console.log(error);
+    throw new HttpException(
+      EHttpCode.BAD_REQUEST,
+      getMessage("somethingWentWrong")
+    );
+  }
+};
+
+
+
