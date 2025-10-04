@@ -18,6 +18,10 @@ export const Playlist = sequelize.define(
 
       }
     },
+    s3_thumbnail_url:{
+     type:DataTypes.STRING,
+    //  allowNull:false
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
