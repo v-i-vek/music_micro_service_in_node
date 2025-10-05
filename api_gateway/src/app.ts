@@ -1,16 +1,18 @@
 
 import express, { Response, Request, NextFunction, urlencoded } from "express";
+import cors from "cors"
 import dotenv from "dotenv";
 dotenv.config();
 import proxy from "express-http-proxy";
 import { validateToken } from "./middleware/validateToken";
+
 
 const app = express();
 
 // DO NOT USE GLOBAL BODY PARSERS
 // app.use(express.json({limit:'50mb'}));
 // app.use(urlencoded({ extended: true ,limit:'50mb'}));
-
+app.use(cors())
 app.disable("x-powered-by");
 const PORT = Number(process.env.PORT) || 4000;
 

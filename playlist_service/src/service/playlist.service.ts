@@ -136,7 +136,7 @@ export const deleteSongFromPlaylist = async (playlistData) => {
 export const getAllUserPlaylist = async (user_id) => {
   try {
     const [data, metadata] =
-      await sequelize.query(`SELECT p.title,p.id, count(ps.song_id) as totalsong FROM public.playlist_songs ps left join playlists p on p.id = ps.playlist_id where p.user_id = '${user_id}'
+      await sequelize.query(`SELECT p.title,p.id,p.s3_thumbnail_url, count(ps.song_id) as totalsong FROM public.playlist_songs ps right join playlists p on p.id = ps.playlist_id where p.user_id = '${user_id}'
       group by p.id `);
     if (!data)
       throw new HttpException(EHttpCode.NOT_FOUND, getMessage("dataNotFound"));
