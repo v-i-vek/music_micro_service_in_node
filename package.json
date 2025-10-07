@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-"start:services": "concurrently \"npm run dev --prefix user_identity_service\" \"npm run dev --prefix playlist_service\" \"npm run dev --prefix api_gateway\" \"npm run dev --prefix song_service\""
+"start:services": "concurrently \"npm run dev --prefix user_identity_service\" \"npm run dev --prefix playlist_service\" \"npm run dev --prefix api_gateway\" \"npm run dev --prefix song_service\"",
+  "install:all": "concurrently \"npm i --prefix user_identity_service\" \"npm i --prefix playlist_service\" \"npm i --prefix api_gateway\" \"npm i --prefix song_service\""
+
   },
   "repository": {
     "type": "git",
