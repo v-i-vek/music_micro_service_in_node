@@ -11,11 +11,11 @@ import { getMessage } from "../utils/message";
 import { publishEvent } from "./rabbitMq.service";
 import { uploadFileToS3 } from "./s3_service";
 
-export const createPlaylist = async (file,playlist: IPlaylist) => {
+export const createPlaylist = async (file, playlist: IPlaylist) => {
   try {
     const objectKey = `${playlist.user_id}-${Math.ceil(Date.now() / 1000)}-${file.originalname}`
-    const s3_url = await uploadFileToS3(file,objectKey)
-    playlist.s3_thumbnail_url = s3_url 
+    const s3_url = await uploadFileToS3(file, objectKey)
+    playlist.s3_thumbnail_url = s3_url
     return await Playlist.create({ ...playlist });
   } catch (error) {
     console.log(error);
@@ -77,7 +77,6 @@ export const getSongByPlaylist = async (playlistId: string) => {
       await sequelize.query(` SELECT s.id,s.s3_url,s.title
   FROM playlist_songs ps
   LEFT JOIN songs s ON s.id = ps.song_id where ps.playlist_id = '${playlistId}'`);
-
     return result;
   } catch (error) {
     console.log(error);

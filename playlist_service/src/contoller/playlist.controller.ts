@@ -8,8 +8,8 @@ export const addPlaylist = async (req: any, res: any, next: NextFunction) => {
   try {
     const playlistData = req.body;
     playlistData.user_id = req.app.locals.user;
-        if(!req.file) throw new HttpException(EHttpCode.NOT_FOUND,getMessage("fileNotFound"))
-    const result = await createPlaylist(req.file,playlistData);
+    if (!req.file) throw new HttpException(EHttpCode.NOT_FOUND, getMessage("fileNotFound"))
+    const result = await createPlaylist(req.file, playlistData);
     res.locals.data = result;
     next();
   } catch (error) {
@@ -43,6 +43,7 @@ export const deleteSongbyId = async (
 export const getSongByPlaylist = async (req, res, next) => {
   try {
     const playlist_id = req.params.id;
+    console.log("callled ", playlist_id)
     const result = await playlistService.getSongByPlaylist(playlist_id);
     res.locals.data = result;
     next();
